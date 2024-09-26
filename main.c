@@ -33,26 +33,28 @@ char** place_token(char** board, int rows, int columns, char player){
     do{
         printf("%c select where you want to place your token: ", player);
         scanf("%d",&token);
+        printf("\n");
         if(token < 1 || token > columns){
             flag = 1;
-            printf("token out of grid");
+            printf("token out of grid\n");
             fflush(stdin);
+            break;
         }
-        for(int i = rows; i >= 0; i--) {
+        for(int i = rows-1; i >= 0; i--) {
             if(board[i][token-1] == 0 ){
                 board[i][token-1] = player;
-                printf("test : %c",board[i][token-1]);
                 break;
             }
             if(board[0][token-1] != 0 ){
-                printf("token out of grid");
+                printf("token out of grid\n");
                 fflush(stdin);
                 flag = 1;
+                break;
             }
         }
 
     }while(flag != 0);
-
+    return board;
 
 
 }
@@ -63,9 +65,13 @@ int main( )
     int columns = 7;
 
     char** board = init_board(rows, columns);
-    print_board(board, rows, columns);
-    place_token(board, rows, columns, 'x');
-    print_board(board, rows, columns);
+    while(1){
+        print_board(board, rows, columns);
+        board = place_token(board, rows, columns, 'x');
+        print_board(board, rows, columns);
+        board = place_token(board, rows, columns, 'Y');
+    }
+
 
     return 666;
 }
