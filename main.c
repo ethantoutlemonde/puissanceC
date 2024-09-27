@@ -6,6 +6,7 @@ void print_board(char** board, int rows, int columns);
 char** place_token(char** board, int rows, int columns, char player);
 char switch_player(char c);
 int verif_columns(char **board, int rows, int columns);
+int verif_rows(char **board, int rows, int columns);
 
 
 char** init_board(int rows, int columns){
@@ -64,6 +65,26 @@ char switch_player(char c) {
     return c == 'x' ? 'y' : 'x';
 }
 
+int verif_rows(char **board, int rows, int columns) {
+    int puissance = 4;
+    int verif = 0;
+
+    for (int y = 0; y < columns; y++) {
+        for (int x = 0; x < (rows - 2); x++) {
+            verif = 0;
+            for (int c = 1; c < puissance; c++) {
+                if (board[x][y] == board[x + c][y] && board[x][y] != 0 && (x + c) < rows) {
+                    verif++;
+                }
+                else
+                    verif = 0;
+                if (verif == puissance - 1)
+                    return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 int verif_columns(char **board, int rows, int columns) {
     int puissance = 4;
@@ -87,13 +108,17 @@ int verif_columns(char **board, int rows, int columns) {
 }
 
 
-
 int verif_win(char **board, int rows, int columns) {
     int win = 0;
 
     win = verif_columns(board, rows, columns);
+    if (win == 1)
+        return 1;
+    win = verif_rows(board, rows, columns);
+    if (win == 1)
+        return 1;
 
-    return win;
+    return 0;
 
 }
 
