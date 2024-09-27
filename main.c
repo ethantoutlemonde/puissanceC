@@ -107,14 +107,67 @@ int verif_columns(char **board, int rows, int columns) {
     return 0;
 }
 
+int diagonal(char **board, int rows, int columns){
+    int puissance = 4;
+    int verif;
+
+    for (int x = 0; x < rows; x++) {
+        for (int y = 0; y < columns; y++) {
+            verif = 0;
+            for (int c = 1; c < puissance; c++) {
+                if (board[x][y] == board[x + c][y + c] && board[x][y] != 0)
+                    verif++;
+                else {
+                    verif = 0;
+                    break;
+                }
+                if (verif == puissance - 1) {
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+int diagonalv(char **board, int rows, int columns){
+    int puissance = 4;
+    int verif;
+
+    for (int x = 0; x < rows; x++) {
+        for (int y = 0; y < columns; y++) {
+            verif = 0;
+            for (int c = 1; c < puissance; c++) {
+                if (board[x][y] == board[x + c][y - c] && board[x][y] != 0)
+                    verif++;
+                else {
+                    verif = 0;
+                    break;
+                }
+                if (verif == puissance - 1) {
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
 
 int verif_win(char **board, int rows, int columns) {
     int win = 0;
+
 
     win = verif_columns(board, rows, columns);
     if (win == 1)
         return 1;
     win = verif_rows(board, rows, columns);
+    if (win == 1)
+        return 1;
+    win = diagonal(board, rows, columns);
+    if (win == 1)
+        return 1;
+    win = diagonalv(board, rows, columns);
     if (win == 1)
         return 1;
 
@@ -143,20 +196,5 @@ int main( )
     }
 
 
-
-
     return 666;
 }
-
-
-
-/*
- *     for (int c = 1; c < puissance || c < columns; c++) {
-                if (board[x][y] == board[x][y + c] && board[x][y] != 0)
-                    verif++;
-                if (verif == puissance) {
-                    printf("ttttttt\n");
-                    return 1;
-                }
-            }
- */
